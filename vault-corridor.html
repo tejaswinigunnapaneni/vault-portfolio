@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tejaswini Gunnapaneni — ML Engineer & Data Scientist</title>
+<meta name="description" content="ML Engineer & Data Scientist — 5 years building production ML and GenAI systems at Nvidia, Ford, Delta Rising Foundation, UCM, and CloudEarl. Walk the corridor.">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Tejaswini Gunnapaneni — ML Engineer & Data Scientist">
+<meta property="og:description" content="Five vault doors. Five chapters. One trajectory. An interactive ML engineering portfolio.">
+<meta property="og:image" content="og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Tejaswini Gunnapaneni — ML Engineer & Data Scientist">
+<meta name="twitter:description" content="Five vault doors. Five chapters. One trajectory. An interactive ML engineering portfolio.">
+<meta name="twitter:image" content="og-image.png">
+<style>
+  :root{
+    --bg:#05070a;
+    --panel:#0b0f16;
+    --text:#e7ecf2;
+    --muted:#8b97a8;
+    --nvidia:#3ddc84;
+    --ford:#3d8bff;
+    --delta:#e0a458;
+    --ucm:#e0c23d;
+    --cloudearl:#dfe8f0;
+    --line: rgba(255,255,255,0.08);
+  }
+  *{box-sizing:border-box;}
+  html,body{
+    margin:0; padding:0; background:var(--bg); color:var(--text);
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    overflow-x:hidden;
+  }
+  a{color:inherit;}
+
+  /* ambient canvas background */
+  #bg-canvas{
+    position:fixed; inset:0; z-index:0; opacity:0.55;
+  }
+
+  /* persistent UI */
+  .topbar{
+    position:fixed; top:0; left:0; right:0; z-index:50;
+    display:flex; justify-content:space-between; align-items:center;
+    padding:18px 24px; pointer-events:none;
+  }
+  .topbar > *{pointer-events:auto;}
+  .id-block{
+    display:flex; flex-direction:column; gap:4px; font-size:13px;
+  }
+  .id-block .name{font-weight:600; font-size:15px; letter-spacing:0.3px;}
+  .id-links{display:flex; gap:12px; color:var(--muted);}
+  .id-links a{text-decoration:none; font-size:12px; border-bottom:1px solid transparent; transition:.2s;}
+  .id-links a:hover{color:var(--text); border-color:var(--text);}
+
+  .resume-btn{
+    background: linear-gradient(135deg, rgba(61,220,132,0.18), rgba(61,220,132,0.05));
+    border:1px solid rgba(61,220,132,0.55);
+    color:#bdf7d6;
+    padding:10px 18px; border-radius:999px; font-size:13px; font-weight:600;
+    text-decoration:none; letter-spacing:0.3px;
+    box-shadow:0 0 18px rgba(61,220,132,0.25);
+    transition:.25s;
+  }
+  .resume-btn:hover{ box-shadow:0 0 28px rgba(61,220,132,0.5); transform:translateY(-1px); }
+
+  .contact-btn{
+    position:fixed; bottom:24px; right:24px; z-index:50;
+    width:56px; height:56px; border-radius:50%;
+    background:radial-gradient(circle at 30% 30%, #1c2430, #05070a);
+    border:1px solid var(--line);
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer; text-decoration:none; color:var(--text);
+    box-shadow:0 0 0 0 rgba(61,220,132,0.5);
+    animation: pulse 2.6s infinite;
+  }
+  @keyframes pulse{
+    0%{ box-shadow:0 0 0 0 rgba(61,220,132,0.35); }
+    70%{ box-shadow:0 0 0 14px rgba(61,220,132,0); }
+    100%{ box-shadow:0 0 0 0 rgba(61,220,132,0); }
+  }
+
+  .skip-link{
+    position:fixed; top:18px; left:50%; transform:translateX(-50%);
+    z-index:50; font-size:11px; color:var(--muted); text-decoration:underline;
+    background:rgba(5,7,10,0.6); padding:4px 10px; border-radius:6px;
+  }
+  .skip-link:hover{color:var(--text);}
+
+  .sound-toggle{
+    position:fixed; bottom:24px; left:24px; z-index:50;
+    background:rgba(11,15,22,0.8); border:1px solid var(--line);
+    color:var(--muted); font-size:12px; padding:8px 12px; border-radius:999px;
+    cursor:pointer; display:flex; align-items:center; gap:6px;
+  }
+  .sound-toggle:hover{color:var(--text);}
+
+  /* hero */
+  .hero{
+    position:relative; z-index:2; min-height:100vh;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    text-align:center; padding:0 20px;
+  }
+  .plaque{
+    border:1px solid rgba(224,196,80,0.4);
+    background:linear-gradient(180deg, rgba(224,196,80,0.08), rgba(0,0,0,0));
+    padding:22px 34px; border-radius:6px;
+  }
+  .plaque .eyebrow{ letter-spacing:3px; font-size:11px; color:var(--ucm); text-transform:uppercase; margin-bottom:10px; transition:color .4s ease;}
+  .plaque .eyebrow.verified{ color:var(--nvidia); }
+  .plaque h1{
+    margin:0; font-size:clamp(24px,4vw,40px); font-weight:700;
+    font-family:'Courier New', ui-monospace, monospace; letter-spacing:1px;
+    background:linear-gradient(90deg, var(--nvidia), var(--ford), var(--ucm));
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+    filter:drop-shadow(0 0 14px rgba(61,220,132,0.25));
+  }
+  .plaque h1 .cursor{
+    -webkit-text-fill-color:var(--nvidia); color:var(--nvidia);
+    animation: blink 0.9s steps(1) infinite;
+  }
+  @keyframes blink{ 50%{ opacity:0; } }
+  .plaque p{ margin:10px 0 0; color:var(--muted); font-size:15px; }
+  .scroll-hint{ margin-top:40px; color:var(--muted); font-size:12px; letter-spacing:2px; text-transform:uppercase; animation: bob 2s infinite; cursor:pointer;}
+  @keyframes bob{ 0%,100%{transform:translateY(0);} 50%{transform:translateY(8px);} }
+
+  /* corridor */
+  .corridor-wrap{
+    position:relative; z-index:2; padding:40px 20px 120px;
+  }
+  .corridor-heading{
+    text-align:center; margin:0 0 50px; color:var(--muted);
+    font-size:12px; letter-spacing:3px; text-transform:uppercase;
+  }
+  .timeline-track{
+    max-width:1100px; margin:0 auto 10px; position:relative; height:2px;
+    background:var(--line); border-radius:2px; overflow:hidden;
+  }
+  .timeline-fill{
+    position:absolute; left:0; top:0; bottom:0; width:0%;
+    background:linear-gradient(90deg, var(--nvidia), var(--delta), var(--ucm), var(--ford), var(--cloudearl));
+    transition:width 1.8s ease;
+  }
+  .timeline-dates{
+    max-width:1100px; margin:0 auto 40px; display:flex; justify-content:space-between;
+    font-size:10px; color:var(--muted); letter-spacing:1px;
+  }
+
+  .doors{
+    max-width:1100px; margin:0 auto; display:grid;
+    grid-template-columns:repeat(5,1fr); gap:22px;
+    perspective:1400px;
+  }
+  .door{
+    position:relative; height:420px; border-radius:10px;
+    background:linear-gradient(180deg, #10151d, #070a0e);
+    border:1px solid var(--line);
+    overflow:hidden; cursor:pointer;
+    transform-style:preserve-3d;
+    transition:box-shadow .5s ease, border-color .5s ease;
+  }
+  .door::before{ /* seam */
+    content:''; position:absolute; top:0; bottom:0; left:50%; width:1px;
+    background:rgba(255,255,255,0.15); z-index:3;
+  }
+  .door .leaf{
+    position:absolute; top:0; bottom:0; width:50%; height:100%;
+    background:linear-gradient(180deg, var(--accent,#3ddc84) 0%, transparent 2%), #0d1219;
+    background-blend-mode:overlay;
+    transition:transform .6s cubic-bezier(.2,.8,.2,1);
+    display:flex; align-items:flex-end; justify-content:center;
+  }
+  .door .leaf.left{ left:0; transform-origin:left center; border-right:1px solid var(--line);}
+  .door .leaf.right{ right:0; transform-origin:right center; border-left:1px solid var(--line);}
+  .door:hover .leaf.left{ transform:rotateY(-35deg); }
+  .door:hover .leaf.right{ transform:rotateY(35deg); }
+
+  .door .glow{
+    position:absolute; inset:0; background:radial-gradient(ellipse at 50% 50%, var(--accent,#3ddc84) 0%, transparent 65%);
+    opacity:0; transition:opacity .5s ease; mix-blend-mode:screen; z-index:1;
+  }
+  .door:hover .glow{ opacity:.35; }
+
+  .door .insignia{
+    position:absolute; top:16px; left:0; right:0; text-align:center; z-index:2;
+    font-size:11px; letter-spacing:2px; text-transform:uppercase; color:var(--accent,#3ddc84);
+    text-shadow:0 0 12px var(--accent,#3ddc84);
+  }
+  .door .company{
+    position:absolute; bottom:70px; left:0; right:0; text-align:center; z-index:2;
+    font-size:15px; font-weight:700; padding:0 10px;
+  }
+  .door .dates{
+    position:absolute; bottom:50px; left:0; right:0; text-align:center; z-index:2;
+    font-size:10px; color:var(--muted); letter-spacing:1px;
+  }
+  .door .role{
+    position:absolute; bottom:20px; left:0; right:0; text-align:center; z-index:2;
+    font-size:10px; color:var(--muted); padding:0 14px;
+  }
+
+  .door .card{
+    position:absolute; left:8px; right:8px; bottom:8px; z-index:4;
+    background:rgba(6,9,13,0.94); border:1px solid var(--accent,#3ddc84);
+    border-radius:8px; padding:12px 12px 10px; font-size:11px; color:var(--text);
+    opacity:0; transform:translateY(10px); transition:.35s ease; pointer-events:none;
+    box-shadow:0 0 24px rgba(0,0,0,0.6);
+  }
+  .door:hover .card{ opacity:1; transform:translateY(0); }
+  .door .card ul{ margin:6px 0 0; padding-left:14px; }
+  .door .card li{ margin-bottom:4px; line-height:1.35; }
+  .door .card b{ color:var(--accent,#3ddc84); }
+
+  .door.n1{--accent:#3ddc84;} .door.n2{--accent:#3d8bff;} .door.n3{--accent:#e0a458;}
+  .door.n4{--accent:#e0c23d;} .door.n5{--accent:#dfe8f0;}
+
+  /* archways */
+  .arches{
+    max-width:640px; margin:60px auto 0; display:grid; grid-template-columns:1fr 1fr; gap:20px;
+  }
+  .arch{
+    border:1px dashed var(--line); border-radius:14px 14px 4px 4px; padding:20px;
+    text-align:center; color:var(--muted); font-size:12px; cursor:pointer; transition:.3s;
+  }
+  .arch:hover{ border-color:var(--ucm); color:var(--text); }
+  .arch b{ display:block; color:var(--text); font-size:14px; margin-bottom:4px; }
+
+  .continue-row{ text-align:center; margin:60px auto 0; }
+  .continue-link{
+    display:inline-block; font-size:12px; letter-spacing:1px; color:var(--muted);
+    border:1px solid var(--line); padding:10px 20px; border-radius:999px; cursor:pointer; transition:.25s;
+  }
+  .continue-link:hover{ color:var(--text); border-color:var(--ucm); }
+
+  /* case study panel */
+  .panel-overlay{
+    position:fixed; inset:0; background:rgba(2,3,5,0.86); backdrop-filter: blur(6px);
+    z-index:100; display:none; align-items:flex-start; justify-content:center;
+    overflow-y:auto; padding:60px 20px;
+  }
+  .panel-overlay.open{ display:flex; }
+  .panel{
+    max-width:760px; width:100%; background:linear-gradient(180deg, rgba(20,24,30,0.9), rgba(8,10,14,0.95));
+    border:1px solid var(--accent,#3ddc84); border-radius:14px; padding:34px 34px 30px;
+    box-shadow:0 0 60px rgba(0,0,0,0.6), 0 0 40px var(--accent,#3ddc84);
+    animation: panelIn .4s ease;
+  }
+  @keyframes panelIn{ from{opacity:0; transform:translateY(16px);} to{opacity:1; transform:translateY(0);} }
+  .panel .close{
+    float:right; cursor:pointer; color:var(--muted); font-size:22px; line-height:1;
+  }
+  .panel .eyebrow{ font-size:11px; letter-spacing:2px; text-transform:uppercase; color:var(--accent,#3ddc84); margin-bottom:6px;}
+  .panel h2{ margin:0 0 4px; font-size:26px; }
+  .panel .role{ color:var(--muted); font-size:13px; margin-bottom:20px; }
+  .panel h3{ font-size:12px; letter-spacing:1.5px; text-transform:uppercase; color:var(--muted); margin:22px 0 10px;}
+  .panel ul{ margin:0; padding-left:18px; }
+  .panel li{ margin-bottom:9px; line-height:1.5; font-size:14px; }
+  .panel li b{ color:var(--accent,#3ddc84); }
+  .stack-tags{ display:flex; flex-wrap:wrap; gap:8px; }
+  .stack-tags span{
+    font-size:11px; padding:5px 10px; border-radius:999px; border:1px solid var(--line);
+    color:var(--muted);
+  }
+
+  /* plain resume view */
+  .plain-view{ display:none; position:relative; z-index:2; max-width:760px; margin:100px auto; padding:0 20px 100px; }
+  .plain-view.open{ display:block; }
+  .plain-view h1{ font-size:26px; margin-bottom:2px; }
+  .plain-view h2{ font-size:14px; letter-spacing:1px; text-transform:uppercase; color:var(--muted); margin:28px 0 10px; border-bottom:1px solid var(--line); padding-bottom:6px;}
+  .plain-view .job{ margin-bottom:18px; }
+  .plain-view .job .meta{ font-size:12px; color:var(--muted); }
+  .plain-view ul{ margin:6px 0 0; padding-left:18px; font-size:14px; line-height:1.5;}
+  .back-link{ display:inline-block; margin-bottom:20px; font-size:12px; color:var(--muted); text-decoration:underline; cursor:pointer;}
+
+  footer{
+    position:relative; z-index:2; text-align:center; color:var(--muted);
+    font-size:11px; padding:30px 20px 50px; letter-spacing:1px;
+  }
+
+  @media (max-width: 900px){
+    .doors{ grid-template-columns:1fr; perspective:none; }
+    .door{ height:auto; padding-bottom:14px; }
+    .door .leaf{ position:static; width:100%; height:140px; display:block; transform:none !important; background:#0d1219; }
+    .door::before{ display:none; }
+    .door .insignia{ position:static; margin-top:14px; }
+    .door .company{ position:static; margin-top:10px; font-size:16px; }
+    .door .dates{ position:static; margin-top:4px; }
+    .door .role{ position:static; margin-top:6px; }
+    .door .card{ position:static; opacity:1; transform:none; pointer-events:auto; margin:12px 8px 0; }
+    .timeline-dates{ display:none; }
+    .arches{ grid-template-columns:1fr; }
+    .topbar{ flex-direction:column; align-items:flex-start; gap:10px; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation:none !important; transition:none !important; }
+  }
+</style>
+</head>
+<body>
+
+<a href="#plain" class="skip-link" id="skipLink">View plain-text resume</a>
+
+<canvas id="bg-canvas"></canvas>
+
+<div class="topbar">
+  <div class="id-block">
+    <div class="id-links">
+      <a href="https://www.linkedin.com/in/tejaswini-gunnapaneni" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://github.com/Tejaswini-Gsl" target="_blank" rel="noopener">GitHub</a>
+    </div>
+  </div>
+  <a class="resume-btn" href="Tejaswini_Gunnapaneni_Resume.pdf" download="Tejaswini_Gunnapaneni_Resume.pdf" id="resumeBtn">↓ Download Resume</a>
+</div>
+
+<div class="sound-toggle" id="soundToggle">🔇 Sound off</div>
+<a class="contact-btn" href="mailto:gtejaswini815@gmail.com" title="Contact">✉</a>
+
+<div id="mainView">
+  <section class="hero">
+    <div class="plaque">
+      <div class="eyebrow" id="plaqueEyebrow">Verifying Identity…</div>
+      <h1 id="nameReveal" data-name="TEJASWINI GUNNAPANENI"></h1>
+      <p>ML Engineer &amp; Data Scientist — 5 years building production ML &amp; GenAI systems</p>
+    </div>
+    <div class="scroll-hint" id="scrollHint">↓ walk the corridor ↓</div>
+  </section>
+
+  <section class="corridor-wrap">
+    <div class="corridor-heading">Five vault doors. Five chapters. One trajectory.</div>
+
+    <div class="timeline-track"><div class="timeline-fill" id="timelineFill"></div></div>
+    <div class="timeline-dates">
+      <span>May 2025 — Present</span><span>Feb 2025</span><span>Jan 2024</span><span>Sep 2021</span><span>Jan 2021</span>
+    </div>
+
+    <div class="doors" id="doors">
+
+      <div class="door n1" data-id="nvidia">
+        <div class="glow"></div>
+        <div class="leaf left"></div>
+        <div class="leaf right"></div>
+        <div class="insignia">Nvidia</div>
+        <div class="company">Machine Learning Engineer</div>
+        <div class="dates">May 2025 — Present</div>
+        <div class="role">Forecasting · GenAI · MLOps</div>
+        <div class="card">
+          <b>ML Engineer</b>
+          <ul>
+            <li><b>10–15%</b> forecast accuracy gain on 28-week GPU demand pipeline</li>
+            <li>LLM code-gen assistant adopted by <b>50+</b> global planners</li>
+            <li>Productionized on Astra (Pulumi/Docker/ArgoCD), monitored via Datadog</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="door n3" data-id="delta">
+        <div class="glow"></div>
+        <div class="leaf left"></div>
+        <div class="leaf right"></div>
+        <div class="insignia">Delta Rising Foundation</div>
+        <div class="company">Full Stack AI Engineer</div>
+        <div class="dates">Feb 2025 — Apr 2025</div>
+        <div class="role">Multimodal Deep Learning</div>
+        <div class="card">
+          <b>AI Engineer</b>
+          <ul>
+            <li>LiDAR + hyperspectral pipeline, <b>~87%</b> species classification</li>
+            <li>Transformer report generation, <b>~40%</b> less manual documentation</li>
+            <li>25+ sites monitored for forest health</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="door n4" data-id="ucm">
+        <div class="glow"></div>
+        <div class="leaf left"></div>
+        <div class="leaf right"></div>
+        <div class="insignia">Univ. of Central Missouri</div>
+        <div class="company">Graduate Researcher</div>
+        <div class="dates">Jan 2024 — Dec 2024</div>
+        <div class="role">ASR · RAG · Recommenders</div>
+        <div class="card">
+          <b>Researcher</b>
+          <ul>
+            <li>Multilingual ASR architecture research</li>
+            <li>RAG pipelines via ChromaDB + Pinecone</li>
+            <li>Song recommender (k-NN) on Databricks + Spotify API</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="door n2" data-id="ford">
+        <div class="glow"></div>
+        <div class="leaf left"></div>
+        <div class="leaf right"></div>
+        <div class="insignia">Ford Motor Co.</div>
+        <div class="company">Software Engineer – Data Scientist</div>
+        <div class="dates">Sep 2021 — May 2023</div>
+        <div class="role">Cloud Security ML</div>
+        <div class="card">
+          <b>Data Scientist</b>
+          <ul>
+            <li>Cloud security ML on GCP Vertex AI, <b>+30–35%</b> security score</li>
+            <li>Go remediation microservices cut incident response by <b>~40%</b></li>
+            <li>PySpark/BigQuery ETL over terabyte-scale logs</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="door n5" data-id="cloudearl">
+        <div class="glow"></div>
+        <div class="leaf left"></div>
+        <div class="leaf right"></div>
+        <div class="insignia">CloudEarl Solutions</div>
+        <div class="company">Data Engineer</div>
+        <div class="dates">Jan 2021 — Aug 2021</div>
+        <div class="role">Cross-Cloud ETL</div>
+        <div class="card">
+          <b>Data Engineer</b>
+          <ul>
+            <li>Cross-cloud ETL (AWS/Azure/GCP), <b>-20%</b> data latency</li>
+            <li>Python monitoring pipelines via boto3 → PostgreSQL</li>
+            <li>Docker + Jenkins deployment automation</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="continue-row">
+      <span class="continue-link" id="goProjects">Continue to Projects &amp; Publications →</span>
+    </div>
+  </section>
+
+  <footer>Built as a living resume — hover a door, or click through for the full story.</footer>
+</div>
+
+<!-- projects & publications page -->
+<div class="plain-view" id="projectsView">
+  <span class="back-link" id="backFromProjects">← Back to corridor</span>
+  <h1>Projects &amp; Publications</h1>
+  <p style="color:var(--muted); font-size:13px;">A couple of things built outside the day job.</p>
+
+  <div class="arches">
+    <div class="arch" data-id="projects"><b>Projects</b>Emotion Detection · FinOpsRAG</div>
+    <div class="arch" data-id="publications"><b>Publications</b>IEEE 2021 · Ford Cloud Contribution</div>
+  </div>
+
+  <h2>Projects</h2>
+  <ul>
+    <li><b>Emotion Detection System</b> — real-time facial emotion recognition using CNN architectures and data augmentation, 85% classification accuracy, deployed via SageMaker with GPU inference for low-latency performance.</li>
+    <li><b>FinOpsRAG — Cloud Cost Insight Assistant</b> — AWS cost analysis pipeline ingesting Cost &amp; Usage Report data from S3, queried via Athena for drilldowns by service/account/team. A RAG layer over billing guidelines and past tickets explains cost spikes with citations and surfaces optimization opportunities like idle compute and underutilized resources.</li>
+  </ul>
+
+  <h2>Publications &amp; Honors</h2>
+  <ul>
+    <li>"Hyperparameter Tuning for Hyperspectral Image Classification" — IEEE Conference, 2021</li>
+    <li>"Contribution Toward Cloud" — Ford Motor Company, 2022</li>
+  </ul>
+</div>
+
+<!-- plain text fallback -->
+<div class="plain-view" id="plainView">
+  <span class="back-link" id="backLink">← Back to corridor</span>
+  <h1>Tejaswini Gunnapaneni</h1>
+  <p style="color:var(--muted); font-size:13px;">ML Engineer &amp; Data Scientist · gtejaswini815@gmail.com · <a href="https://www.linkedin.com/in/tejaswini-gunnapaneni" target="_blank">LinkedIn</a> · <a href="https://github.com/Tejaswini-Gsl" target="_blank">GitHub</a></p>
+
+  <h2>Experience</h2>
+  <div class="job">
+    <b>Nvidia</b> — Machine Learning Engineer <span class="meta">· May 2025 – Present</span>
+    <ul>
+      <li>Built 28-week GPU demand forecasting pipeline (XGBoost, LightGBM, CNN, ARIMA), +10–15% accuracy</li>
+      <li>Designed LLM analytics code-gen system adopted by 50+ global planners</li>
+      <li>Built enterprise metrics assistant over SAP HANA/IBP with retrieval + guardrails</li>
+      <li>Productionized on Astra (Pulumi, Docker, GitLab CI/CD, ArgoCD), monitored with Datadog</li>
+    </ul>
+  </div>
+  <div class="job">
+    <b>Delta Rising Foundation</b> — Full Stack AI Engineer <span class="meta">· Feb 2025 – Apr 2025</span>
+    <ul>
+      <li>Multimodal LiDAR + hyperspectral pipeline for forest monitoring, ~87% species classification accuracy</li>
+      <li>Transformer-based ecological report generation, ~40% less manual documentation time</li>
+    </ul>
+  </div>
+  <div class="job">
+    <b>University of Central Missouri</b> — Graduate Researcher <span class="meta">· Jan 2024 – Dec 2024</span>
+    <ul>
+      <li>Multilingual/multi-domain ASR research</li>
+      <li>Multimodal video LLM summarization &amp; Q&amp;A application</li>
+      <li>RAG pipelines with ChromaDB and Pinecone</li>
+      <li>LangChain automation tools, +25% efficiency</li>
+      <li>Song recommendation engine (k-NN/clustering) on Databricks + Spotify API</li>
+    </ul>
+  </div>
+  <div class="job">
+    <b>Ford Motor Company</b> — Software Engineer – Data Scientist <span class="meta">· Sep 2021 – May 2023</span>
+    <ul>
+      <li>ML models for cloud security detection on GCP Vertex AI, +30–35% security score</li>
+      <li>Go remediation services + alerting (Pub/Sub, Webex, SendGrid), -40% incident response time</li>
+      <li>PySpark/BigQuery ETL for terabyte-scale log processing</li>
+      <li>Docker/Kubernetes/Terraform with Tekton CI/CD and SonarQube</li>
+    </ul>
+  </div>
+  <div class="job">
+    <b>CloudEarl Solutions</b> — Data Engineer <span class="meta">· Jan 2021 – Aug 2021</span>
+    <ul>
+      <li>Cross-cloud ETL pipelines (AWS/Azure/GCP), -20% analytics latency</li>
+      <li>Python monitoring pipelines (boto3) into PostgreSQL</li>
+      <li>Docker + Jenkins deployment automation, data quality controls (-25% manual fixes)</li>
+    </ul>
+  </div>
+
+  <h2>Projects</h2>
+  <ul>
+    <li><b>Emotion Detection System</b> — CNN + OpenCV facial emotion recognition, 85% accuracy, deployed on SageMaker</li>
+    <li><b>FinOpsRAG</b> — AWS cost insight assistant with RAG over billing guidelines, Athena drilldowns, citation-backed answers</li>
+  </ul>
+
+  <h2>Publications &amp; Honors</h2>
+  <ul>
+    <li>Hyperparameter Tuning for Hyperspectral Image Classification — IEEE Conference, 2021</li>
+    <li>Contribution Toward Cloud — Ford Motor Company, 2022</li>
+  </ul>
+
+  <h2>Education</h2>
+  <ul>
+    <li>M.S. Computer Science — University of Central Missouri, GPA 3.6/4.0</li>
+    <li>B.Tech Computer Science — Centurion University of Technology and Management, GPA 3.6/4.0</li>
+  </ul>
+</div>
+
+<!-- case study overlay -->
+<div class="panel-overlay" id="panelOverlay">
+  <div class="panel" id="panel">
+    <span class="close" id="closePanel">×</span>
+    <div class="eyebrow" id="pEyebrow">Company</div>
+    <h2 id="pTitle">Role</h2>
+    <div class="role" id="pDates">Dates</div>
+    <h3>What I Built</h3>
+    <ul id="pWins"></ul>
+    <h3>Tech Stack</h3>
+    <div class="stack-tags" id="pStack"></div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+// ---------- Background: drifting neural constellation ----------
+(function(){
+  const canvas = document.getElementById('bg-canvas');
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const renderer = new THREE.WebGLRenderer({canvas, alpha:true, antialias:true});
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+  renderer.setSize(window.innerWidth, window.innerHeight);
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(60, window.innerWidth/window.innerHeight, 0.1, 100);
+  camera.position.z = 18;
+
+  const COUNT = window.innerWidth < 700 ? 90 : 220;
+  const positions = new Float32Array(COUNT*3);
+  const speeds = [];
+  const colors = new Float32Array(COUNT*3);
+  const palette = [[0.24,0.86,0.52],[0.24,0.55,1.0],[0.88,0.64,0.35],[0.88,0.76,0.24],[0.85,0.9,0.95]];
+
+  for(let i=0;i<COUNT;i++){
+    positions[i*3]   = (Math.random()-0.5)*40;
+    positions[i*3+1] = (Math.random()-0.5)*22;
+    positions[i*3+2] = (Math.random()-0.5)*20;
+    speeds.push(0.05 + Math.random()*0.12);
+    const c = palette[Math.floor(Math.random()*palette.length)];
+    colors[i*3]=c[0]; colors[i*3+1]=c[1]; colors[i*3+2]=c[2];
+  }
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.BufferAttribute(positions,3));
+  geo.setAttribute('color', new THREE.BufferAttribute(colors,3));
+  const mat = new THREE.PointsMaterial({size:0.16, vertexColors:true, transparent:true, opacity:0.85});
+  const points = new THREE.Points(geo, mat);
+  scene.add(points);
+
+  // faint connecting lines between nearby points (computed once for perf)
+  const lineGeo = new THREE.BufferGeometry();
+  const linePositions = [];
+  for(let i=0;i<COUNT;i++){
+    for(let j=i+1;j<COUNT;j++){
+      const dx = positions[i*3]-positions[j*3];
+      const dy = positions[i*3+1]-positions[j*3+1];
+      const dz = positions[i*3+2]-positions[j*3+2];
+      const d = Math.sqrt(dx*dx+dy*dy+dz*dz);
+      if(d < 3.2){
+        linePositions.push(positions[i*3],positions[i*3+1],positions[i*3+2]);
+        linePositions.push(positions[j*3],positions[j*3+1],positions[j*3+2]);
+      }
+    }
+  }
+  lineGeo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(linePositions),3));
+  const lineMat = new THREE.LineBasicMaterial({color:0x2a3a4a, transparent:true, opacity:0.25});
+  const lines = new THREE.LineSegments(lineGeo, lineMat);
+  scene.add(lines);
+
+  function resize(){
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    camera.aspect = window.innerWidth/window.innerHeight;
+    camera.updateProjectionMatrix();
+  }
+  window.addEventListener('resize', resize);
+
+  // ---- "walking the corridor" scroll effect ----
+  const corridorWrap = document.querySelector('.corridor-wrap');
+  const doorEls = document.querySelectorAll('.door');
+  const homeZ = 18;
+  let targetZ = homeZ;
+  let progress = 0;
+
+  function scrollProgress(){
+    if(!corridorWrap) return 0;
+    const rect = corridorWrap.getBoundingClientRect();
+    const vh = window.innerHeight;
+    const total = rect.height + vh;
+    const passed = vh - rect.top;
+    return Math.min(1, Math.max(0, passed/total));
+  }
+
+  function onScroll(){
+    if(reduced) return;
+    progress = scrollProgress();
+    targetZ = homeZ - progress*10; // dolly forward as the corridor scrolls into view
+    const grow = 1 + progress*0.07;
+    doorEls.forEach(d=>{ d.style.transform = `scale(${grow})`; });
+  }
+  window.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  window.walkToCorridor = function(){
+    corridorWrap.scrollIntoView({behavior: reduced ? 'auto' : 'smooth', block:'start'});
+  };
+  document.getElementById('scrollHint').addEventListener('click', window.walkToCorridor);
+
+  let t = 0;
+  function animate(){
+    requestAnimationFrame(animate);
+    if(!reduced){
+      t += 0.0018;
+      points.rotation.y = t*0.3;
+      lines.rotation.y = t*0.3;
+      points.rotation.x = Math.sin(t*0.5)*0.05;
+      lines.rotation.x = points.rotation.x;
+
+      // walk forward toward the target depth, with a subtle footstep sway
+      camera.position.z += (targetZ - camera.position.z)*0.05;
+      const sway = progress*0.12;
+      camera.position.y = Math.sin(performance.now()*0.004)*sway;
+      camera.position.x = Math.sin(performance.now()*0.002)*sway*0.6;
+    }
+    renderer.render(scene, camera);
+  }
+  animate();
+})();
+
+// ---------- Name plaque: decrypt/reveal effect ----------
+(function(){
+  const el = document.getElementById('nameReveal');
+  const eyebrow = document.getElementById('plaqueEyebrow');
+  const target = el.dataset.name;
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const glyphs = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#$%&*!?';
+
+  if(reduced){
+    el.textContent = target;
+    eyebrow.textContent = 'ML Research Facility — Access Granted';
+    eyebrow.classList.add('verified');
+    return;
+  }
+
+  let revealed = 0;
+  let frame = 0;
+  const speed = 2; // frames per glyph flicker
+
+  function tick(){
+    frame++;
+    let out = '';
+    for(let i=0;i<target.length;i++){
+      const ch = target[i];
+      if(ch === ' '){ out += ' '; continue; }
+      if(i < revealed){ out += ch; }
+      else { out += glyphs[Math.floor(Math.random()*glyphs.length)]; }
+    }
+    el.innerHTML = out + '<span class="cursor">▌</span>';
+
+    if(frame % speed === 0 && revealed < target.length){ revealed++; }
+
+    if(revealed >= target.length){
+      el.innerHTML = target + '<span class="cursor">▌</span>';
+      eyebrow.textContent = 'ML Research Facility — Access Granted';
+      eyebrow.classList.add('verified');
+      setTimeout(()=>{ el.innerHTML = target; }, 1400); // cursor fades away
+      return;
+    }
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+})();
+
+// ---------- Timeline fill on scroll into view ----------
+const timelineFill = document.getElementById('timelineFill');
+const doorsSection = document.getElementById('doors');
+const io = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){ timelineFill.style.width = '100%'; }
+  });
+}, {threshold:0.3});
+io.observe(doorsSection);
+
+// ---------- Case study panel data ----------
+const CASES = {
+  nvidia: {
+    eyebrow:'Nvidia · May 2025 – Present', title:'Machine Learning Engineer', dates:'Forecasting · GenAI · MLOps',
+    wins:[
+      '<b>10–15%</b> forecast accuracy improvement on a 28-week GPU demand pipeline benchmarking XGBoost, LightGBM, CNN, and ARIMA across 400+ macro/supply features',
+      'Designed an LLM-powered analytics code-generation system (OpenAI APIs + Llama-based models), adopted by <b>50+</b> global planners',
+      'Built an enterprise metrics assistant over SAP HANA/IBP data with retrieval + web search and guardrails to block out-of-scope queries',
+      'Productionized services on NVIDIA\'s internal ML platform (Astra via Pulumi) with Docker, GitLab CI/CD, and ArgoCD, monitored via Datadog'
+    ],
+    stack:['Python','PyTorch','XGBoost','OpenAI API','Llama','Pulumi','Docker','ArgoCD','Datadog','AWS S3'],
+    accent:'#3ddc84'
+  },
+  ford: {
+    eyebrow:'Ford Motor Company · Sep 2021 – May 2023', title:'Software Engineer – Data Scientist', dates:'Cloud Security ML',
+    wins:[
+      'Developed ML models for cloud security detection deployed on GCP Vertex AI, improving security scores by <b>30–35%</b> and cutting high-risk misconfigurations ~25%',
+      'Built Go remediation services and alerting systems (Pub/Sub, Webex, SendGrid), cutting incident response time by <b>~40%</b>',
+      'Created PySpark and BigQuery ETL pipelines processing terabyte-scale logs for near real-time anomaly detection',
+      'Productionized pipelines with Docker, Kubernetes, and Terraform on Tekton CI/CD with SonarQube checks, accelerating release cycles 10–15%'
+    ],
+    stack:['GCP Vertex AI','Go','PySpark','BigQuery','Docker','Kubernetes','Terraform','Tekton','SonarQube'],
+    accent:'#3d8bff'
+  },
+  delta: {
+    eyebrow:'Delta Rising Foundation · Feb 2025 – Apr 2025', title:'Full Stack AI Engineer', dates:'Multimodal Deep Learning',
+    wins:[
+      'Developed a multimodal ML pipeline combining LiDAR and hyperspectral imagery for forest monitoring and species classification across <b>25+</b> sites, ~<b>87%</b> accuracy',
+      'Integrated transformer models for automatic ecological report generation, reducing manual documentation time by <b>~40%</b>',
+      'Delivered production-ready outputs for environmental researchers relying on automated field reporting'
+    ],
+    stack:['PyTorch','Transformers','LiDAR','Hyperspectral Imaging','Python'],
+    accent:'#e0a458'
+  },
+  ucm: {
+    eyebrow:'University of Central Missouri · Jan 2024 – Dec 2024', title:'Graduate Researcher', dates:'ASR · RAG · Recommenders',
+    wins:[
+      'Researched deep learning architectures for multilingual and multi-domain Automatic Speech Recognition (ASR)',
+      'Developed a multimodal video analysis app with LLM-powered summarization and Q&amp;A across text, image, and audio',
+      'Built and optimized RAG pipelines using ChromaDB and Pinecone for question-answering retrieval accuracy',
+      'Implemented LangChain automation tools improving text-processing efficiency by <b>25%</b>',
+      'Built a song recommendation engine (k-NN/clustering) on Databricks using Spotify API + MLlib'
+    ],
+    stack:['LangChain','ChromaDB','Pinecone','Databricks','Spotify API','MLlib','AWS'],
+    accent:'#e0c23d'
+  },
+  cloudearl: {
+    eyebrow:'CloudEarl Solutions · Jan 2021 – Aug 2021', title:'Data Engineer', dates:'Cross-Cloud ETL',
+    wins:[
+      'Designed and automated ingestion/transformation pipelines across AWS, Azure, and GCP, reducing analytics data latency by <b>20%</b>',
+      'Built Python monitoring pipelines (boto3) collecting operational metrics from S3, ECS, Lambda, and CloudWatch into PostgreSQL',
+      'Containerized workflows with Docker and automated deployments via Jenkins, speeding release cycles',
+      'Implemented data quality controls (validation, schema enforcement, alerts), reducing manual data fixes by <b>25%</b>'
+    ],
+    stack:['AWS','Azure','GCP','boto3','PostgreSQL','Docker','Jenkins'],
+    accent:'#dfe8f0'
+  },
+  projects: {
+    eyebrow:'Independent Projects', title:'Emotion Detection · FinOpsRAG', dates:'',
+    wins:[
+      '<b>Emotion Detection System</b> — real-time facial emotion recognition with CNNs + data augmentation, 85% classification accuracy, deployed via SageMaker with GPU inference',
+      '<b>FinOpsRAG</b> — AWS cost insight assistant ingesting Cost &amp; Usage Report data via Athena, with a RAG layer over billing guidelines and past tickets to explain cost spikes with citations'
+    ],
+    stack:['TensorFlow','PyTorch','OpenCV','SageMaker','FastAPI','Athena','OpenSearch'],
+    accent:'#3ddc84'
+  },
+  publications: {
+    eyebrow:'Publications & Honors', title:'Research & Recognition', dates:'',
+    wins:[
+      '"Hyperparameter Tuning for Hyperspectral Image Classification" — IEEE Conference, 2021',
+      '"Contribution Toward Cloud" — Ford Motor Company, 2022'
+    ],
+    stack:['IEEE','Research'],
+    accent:'#e0c23d'
+  }
+};
+
+const overlay = document.getElementById('panelOverlay');
+const panel = document.getElementById('panel');
+function openCase(id){
+  const c = CASES[id]; if(!c) return;
+  document.getElementById('pEyebrow').textContent = c.eyebrow;
+  document.getElementById('pTitle').textContent = c.title;
+  document.getElementById('pDates').textContent = c.dates;
+  document.getElementById('pWins').innerHTML = c.wins.map(w=>`<li>${w}</li>`).join('');
+  document.getElementById('pStack').innerHTML = c.stack.map(s=>`<span>${s}</span>`).join('');
+  panel.style.setProperty('--accent', c.accent);
+  panel.style.borderColor = c.accent;
+  panel.style.boxShadow = `0 0 60px rgba(0,0,0,0.6), 0 0 40px ${c.accent}`;
+  overlay.classList.add('open');
+}
+document.querySelectorAll('.door').forEach(d=>{
+  d.addEventListener('click', ()=> openCase(d.dataset.id));
+});
+document.querySelectorAll('.arch').forEach(a=>{
+  a.addEventListener('click', ()=> openCase(a.dataset.id));
+});
+document.getElementById('closePanel').addEventListener('click', ()=> overlay.classList.remove('open'));
+overlay.addEventListener('click', (e)=>{ if(e.target===overlay) overlay.classList.remove('open'); });
+document.addEventListener('keydown', (e)=>{ if(e.key==='Escape') overlay.classList.remove('open'); });
+
+// ---------- view toggle (corridor / plain resume / projects page) ----------
+const mainView = document.getElementById('mainView');
+const plainView = document.getElementById('plainView');
+const projectsView = document.getElementById('projectsView');
+
+function showView(name){
+  mainView.style.display = name==='main' ? 'block' : 'none';
+  plainView.classList.toggle('open', name==='plain');
+  projectsView.classList.toggle('open', name==='projects');
+  window.scrollTo(0,0);
+
+  if(name==='main' && window.walkToCorridor){
+    // replay the walk-in effect: settle at the hero, then step back down the corridor
+    requestAnimationFrame(()=> requestAnimationFrame(()=> window.walkToCorridor()));
+  }
+}
+
+document.getElementById('skipLink').addEventListener('click', (e)=>{
+  e.preventDefault();
+  showView('plain');
+});
+document.getElementById('backLink').addEventListener('click', ()=> showView('main'));
+document.getElementById('goProjects').addEventListener('click', ()=> showView('projects'));
+document.getElementById('backFromProjects').addEventListener('click', ()=> showView('main'));
+
+// ---------- sound toggle (visual only, no autoplay audio wired) ----------
+let soundOn = false;
+document.getElementById('soundToggle').addEventListener('click', function(){
+  soundOn = !soundOn;
+  this.textContent = soundOn ? '🔊 Sound on' : '🔇 Sound off';
+});
+</script>
+</body>
+</html>
