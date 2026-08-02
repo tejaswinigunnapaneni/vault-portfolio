@@ -187,8 +187,8 @@
     transition:transform .65s cubic-bezier(.2,.8,.2,1);
     display:flex; align-items:flex-end; justify-content:center;
   }
-  .door .leaf.left{ left:0; transform-origin:left center; border-right:1px solid var(--line); box-shadow:inset -10px 0 18px rgba(0,0,0,0.5);}
-  .door .leaf.right{ right:0; transform-origin:right center; border-left:1px solid var(--line); box-shadow:inset 10px 0 18px rgba(0,0,0,0.5);}
+  .door .leaf.left{ left:0; transform-origin:left center; box-shadow:inset -10px 0 18px rgba(0,0,0,0.5);}
+  .door .leaf.right{ right:0; transform-origin:right center; box-shadow:inset 10px 0 18px rgba(0,0,0,0.5);}
   .door:hover .leaf.left, .door.active .leaf.left{ transform:rotateY(-58deg); }
   .door:hover .leaf.right, .door.active .leaf.right{ transform:rotateY(58deg); }
 
