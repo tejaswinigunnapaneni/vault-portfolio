@@ -155,7 +155,7 @@
   }
   .door{
     position:relative; height:420px;
-    border-radius:14% 14% 8px 8px / 48px 48px 8px 8px;
+    border-radius:10px;
     background:linear-gradient(180deg, #10151d, #070a0e);
     border:1px solid var(--line);
     box-shadow:inset 0 0 0 1px rgba(255,255,255,0.04);
@@ -305,7 +305,7 @@
 
   @media (max-width: 900px){
     .doors{ grid-template-columns:1fr; }
-    .door{ height:auto; padding-bottom:16px; border-color:var(--accent); border-radius:14px; perspective:none; }
+    .door{ height:auto; padding-bottom:16px; border-color:var(--accent); border-radius:10px; perspective:none; }
     .door .glow{ top:0; left:0; right:0; bottom:auto; height:120px; width:auto; margin-left:0; inset:auto; opacity:0.28; }
     .door .wheel{ display:none; }
     .door .leaf{
@@ -854,11 +854,13 @@ function openCase(id, triggerEl){
     }
   }
   overlay.classList.add('open');
+  playChime();
 }
 
 function closeCase(){
   overlay.classList.remove('open');
   if(activeDoorEl){ activeDoorEl.classList.remove('active'); activeDoorEl = null; }
+  playClose();
 }
 
 document.querySelectorAll('.door').forEach(d=>{
@@ -896,10 +898,77 @@ document.getElementById('backLink').addEventListener('click', ()=> showView('mai
 document.getElementById('goProjects').addEventListener('click', ()=> showView('projects'));
 document.getElementById('backFromProjects').addEventListener('click', ()=> showView('main'));
 
-// ---------- sound toggle (visual only, no autoplay audio wired) ----------
+// ---------- sound: synthesized, opt-in only (off by default) ----------
 let soundOn = false;
+let audioCtx = null;
+function ensureAudio(){
+  if(!audioCtx){ audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
+  if(audioCtx.state === 'suspended'){ audioCtx.resume(); }
+  return audioCtx;
+}
+
+function playCreak(){
+  if(!soundOn) return;
+  const ctx = ensureAudio();
+  const dur = 0.35;
+  const bufferSize = Math.floor(ctx.sampleRate * dur);
+  const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+  const data = buffer.getChannelData(0);
+  for(let i=0;i<bufferSize;i++){ data[i] = (Math.random()*2-1) * Math.pow(1 - i/bufferSize, 2); }
+  const noise = ctx.createBufferSource();
+  noise.buffer = buffer;
+  const filter = ctx.createBiquadFilter();
+  filter.type = 'bandpass';
+  filter.Q.value = 5;
+  filter.frequency.setValueAtTime(260, ctx.currentTime);
+  filter.frequency.linearRampToValueAtTime(760, ctx.currentTime + dur);
+  const gain = ctx.createGain();
+  gain.gain.setValueAtTime(0.16, ctx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + dur);
+  noise.connect(filter).connect(gain).connect(ctx.destination);
+  noise.start();
+}
+
+function playChime(){
+  if(!soundOn) return;
+  const ctx = ensureAudio();
+  const now = ctx.currentTime;
+  [660, 990].forEach((freq, i)=>{
+    const osc = ctx.createOscillator();
+    osc.type = 'sine';
+    osc.frequency.value = freq;
+    const gain = ctx.createGain();
+    gain.gain.setValueAtTime(0, now + i*0.07);
+    gain.gain.linearRampToValueAtTime(0.13, now + i*0.07 + 0.02);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + i*0.07 + 0.55);
+    osc.connect(gain).connect(ctx.destination);
+    osc.start(now + i*0.07);
+    osc.stop(now + i*0.07 + 0.6);
+  });
+}
+
+function playClose(){
+  if(!soundOn) return;
+  const ctx = ensureAudio();
+  const now = ctx.currentTime;
+  const osc = ctx.createOscillator();
+  osc.type = 'sine';
+  osc.frequency.setValueAtTime(480, now);
+  osc.frequency.exponentialRampToValueAtTime(170, now + 0.25);
+  const gain = ctx.createGain();
+  gain.gain.setValueAtTime(0.13, now);
+  gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+  osc.connect(gain).connect(ctx.destination);
+  osc.start(now); osc.stop(now + 0.32);
+}
+
+document.querySelectorAll('.door').forEach(d=>{
+  d.addEventListener('mouseenter', playCreak);
+});
+
 document.getElementById('soundToggle').addEventListener('click', function(){
   soundOn = !soundOn;
+  if(soundOn) ensureAudio();
   this.textContent = soundOn ? '🔊 Sound on' : '🔇 Sound off';
 });
 </script>
