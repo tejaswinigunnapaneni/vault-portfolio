@@ -163,11 +163,7 @@
     transform-style:preserve-3d; perspective:650px;
     transition:box-shadow .5s ease, border-color .5s ease;
   }
-  .door::before{ /* lit seam */
-    content:''; position:absolute; top:0; bottom:0; left:50%; width:2px; margin-left:-1px;
-    background:var(--accent,#3ddc84); opacity:.55; z-index:3;
-    box-shadow:0 0 8px var(--accent,#3ddc84);
-  }
+  .door::before{ display:none; }
   .door .wheel{
     position:absolute; top:44%; left:50%; width:34px; height:34px; z-index:3;
     transform:translate(-50%,-50%);
@@ -317,7 +313,7 @@
       width:50%; height:60px; transform:none !important;
       background:linear-gradient(180deg, rgba(255,255,255,0.08), rgba(0,0,0,0));
     }
-    .door::before{ display:block; top:0; bottom:auto; height:120px; background:var(--accent); opacity:0.85; }
+    .door::before{ display:none; }
     .door .insignia{ position:static; margin-top:14px; }
     .door .company{ position:static; margin-top:10px; font-size:16px; }
     .door .dates{ position:static; margin-top:4px; }
