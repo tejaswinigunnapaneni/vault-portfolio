@@ -152,40 +152,60 @@
   .doors{
     max-width:1100px; margin:0 auto; display:grid;
     grid-template-columns:repeat(5,1fr); gap:22px;
-    perspective:1400px;
   }
   .door{
-    position:relative; height:420px; border-radius:10px;
+    position:relative; height:420px;
+    border-radius:22% 22% 8px 8px / 64px 64px 8px 8px;
     background:linear-gradient(180deg, #10151d, #070a0e);
     border:1px solid var(--line);
+    box-shadow:inset 0 0 0 1px rgba(255,255,255,0.04);
     overflow:hidden; cursor:pointer;
-    transform-style:preserve-3d;
+    transform-style:preserve-3d; perspective:650px;
     transition:box-shadow .5s ease, border-color .5s ease;
   }
-  .door::before{ /* seam */
-    content:''; position:absolute; top:0; bottom:0; left:50%; width:1px;
-    background:rgba(255,255,255,0.15); z-index:3;
+  .door::before{ /* lit seam */
+    content:''; position:absolute; top:0; bottom:0; left:50%; width:2px; margin-left:-1px;
+    background:var(--accent,#3ddc84); opacity:.55; z-index:3;
+    box-shadow:0 0 8px var(--accent,#3ddc84);
   }
+  .door .wheel{
+    position:absolute; top:44%; left:50%; width:34px; height:34px; z-index:3;
+    transform:translate(-50%,-50%);
+    border-radius:50%; border:2px solid var(--accent,#3ddc84);
+    background:radial-gradient(circle at 35% 30%, rgba(255,255,255,0.18), rgba(0,0,0,0.55));
+    box-shadow:0 0 12px var(--accent,#3ddc84), inset 0 0 6px rgba(0,0,0,0.6);
+    transition:transform .55s cubic-bezier(.2,.8,.2,1);
+  }
+  .door .wheel::before, .door .wheel::after{
+    content:''; position:absolute; top:50%; left:50%; background:var(--accent,#3ddc84); opacity:.8;
+  }
+  .door .wheel::before{ width:20px; height:2px; transform:translate(-50%,-50%); }
+  .door .wheel::after{ width:2px; height:20px; transform:translate(-50%,-50%); }
+  .door:hover .wheel, .door.active .wheel{ transform:translate(-50%,-50%) rotate(52deg) scale(1.12); }
+
   .door .leaf{
     position:absolute; top:0; bottom:0; width:50%; height:100%;
-    background:linear-gradient(180deg, var(--accent,#3ddc84) 0%, transparent 2%), #0d1219;
-    background-blend-mode:overlay;
-    transition:transform .6s cubic-bezier(.2,.8,.2,1);
+    background:
+      linear-gradient(180deg, rgba(255,255,255,0.06), rgba(0,0,0,0.28)),
+      linear-gradient(90deg, #131a22, #0a0e13);
+    transition:transform .65s cubic-bezier(.2,.8,.2,1);
     display:flex; align-items:flex-end; justify-content:center;
   }
-  .door .leaf.left{ left:0; transform-origin:left center; border-right:1px solid var(--line);}
-  .door .leaf.right{ right:0; transform-origin:right center; border-left:1px solid var(--line);}
-  .door:hover .leaf.left, .door.active .leaf.left{ transform:rotateY(-35deg); }
-  .door:hover .leaf.right, .door.active .leaf.right{ transform:rotateY(35deg); }
+  .door .leaf.left{ left:0; transform-origin:left center; border-right:1px solid var(--line); box-shadow:inset -10px 0 18px rgba(0,0,0,0.5);}
+  .door .leaf.right{ right:0; transform-origin:right center; border-left:1px solid var(--line); box-shadow:inset 10px 0 18px rgba(0,0,0,0.5);}
+  .door:hover .leaf.left, .door.active .leaf.left{ transform:rotateY(-58deg); }
+  .door:hover .leaf.right, .door.active .leaf.right{ transform:rotateY(58deg); }
 
   .door .glow{
-    position:absolute; inset:0; background:radial-gradient(ellipse at 50% 50%, var(--accent,#3ddc84) 0%, transparent 65%);
+    position:absolute; top:0; bottom:0; left:50%; width:90px; margin-left:-45px;
+    background:linear-gradient(90deg, transparent, var(--accent,#3ddc84), transparent);
+    filter:blur(12px);
     opacity:0; transition:opacity .5s ease; mix-blend-mode:screen; z-index:1;
   }
-  .door:hover .glow, .door.active .glow{ opacity:.35; }
+  .door:hover .glow, .door.active .glow{ opacity:.6; }
 
   .door .insignia{
-    position:absolute; top:16px; left:0; right:0; text-align:center; z-index:2;
+    position:absolute; top:28px; left:0; right:0; text-align:center; z-index:2;
     font-size:11px; letter-spacing:2px; text-transform:uppercase; color:var(--accent,#3ddc84);
     text-shadow:0 0 12px var(--accent,#3ddc84);
   }
@@ -287,9 +307,10 @@
   }
 
   @media (max-width: 900px){
-    .doors{ grid-template-columns:1fr; perspective:none; }
-    .door{ height:auto; padding-bottom:16px; border-color:var(--accent); }
-    .door .glow{ top:0; left:0; right:0; bottom:auto; height:120px; inset:auto; opacity:0.28; }
+    .doors{ grid-template-columns:1fr; }
+    .door{ height:auto; padding-bottom:16px; border-color:var(--accent); border-radius:14px; perspective:none; }
+    .door .glow{ top:0; left:0; right:0; bottom:auto; height:120px; width:auto; margin-left:0; inset:auto; opacity:0.28; }
+    .door .wheel{ display:none; }
     .door .leaf{
       position:static; display:inline-block; vertical-align:top;
       width:50%; height:60px; transform:none !important;
@@ -352,6 +373,7 @@
 
       <div class="door n1" data-id="nvidia">
         <div class="glow"></div>
+        <div class="wheel"></div>
         <div class="leaf left"></div>
         <div class="leaf right"></div>
         <div class="insignia">Nvidia</div>
@@ -370,6 +392,7 @@
 
       <div class="door n3" data-id="delta">
         <div class="glow"></div>
+        <div class="wheel"></div>
         <div class="leaf left"></div>
         <div class="leaf right"></div>
         <div class="insignia">Delta Rising Foundation</div>
@@ -388,6 +411,7 @@
 
       <div class="door n4" data-id="ucm">
         <div class="glow"></div>
+        <div class="wheel"></div>
         <div class="leaf left"></div>
         <div class="leaf right"></div>
         <div class="insignia">Univ. of Central Missouri</div>
@@ -406,6 +430,7 @@
 
       <div class="door n2" data-id="ford">
         <div class="glow"></div>
+        <div class="wheel"></div>
         <div class="leaf left"></div>
         <div class="leaf right"></div>
         <div class="insignia">Ford Motor Co.</div>
@@ -424,6 +449,7 @@
 
       <div class="door n5" data-id="cloudearl">
         <div class="glow"></div>
+        <div class="wheel"></div>
         <div class="leaf left"></div>
         <div class="leaf right"></div>
         <div class="insignia">CloudEarl Solutions</div>
