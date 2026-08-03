@@ -907,65 +907,20 @@ function ensureAudio(){
   return audioCtx;
 }
 
-let noiseBuf = null;
-function ensureNoiseBuf(ctx){
-  if(!noiseBuf){
-    const len = ctx.sampleRate * 2;
-    noiseBuf = ctx.createBuffer(1, len, ctx.sampleRate);
-    const data = noiseBuf.getChannelData(0);
-    for(let i=0;i<len;i++){ data[i] = Math.random()*2 - 1; }
-  }
-  return noiseBuf;
-}
+const creakAudio = new Audio('door-creak.mp3');
+creakAudio.preload = 'auto';
+creakAudio.volume = 0.55;
+let lastCreakAt = 0;
 
 function playCreak(){
   if(!soundOn) return;
-  const ctx = ensureAudio();
-  const t0 = ctx.currentTime;
-  const buf = ensureNoiseBuf(ctx);
-
-  const rumble = ctx.createBufferSource();
-  rumble.buffer = buf; rumble.loop = true;
-  const rumbleFilt = ctx.createBiquadFilter();
-  rumbleFilt.type = 'lowpass'; rumbleFilt.frequency.value = 140;
-  const rumbleGain = ctx.createGain();
-  rumbleGain.gain.setValueAtTime(0.0001, t0);
-  rumbleGain.gain.linearRampToValueAtTime(0.05, t0 + 0.1);
-  rumbleGain.gain.linearRampToValueAtTime(0.0001, t0 + 1.05);
-  rumble.connect(rumbleFilt).connect(rumbleGain).connect(ctx.destination);
-  rumble.start(t0); rumble.stop(t0 + 1.1);
-
-  const squeaks = [
-    {at:0.02, dur:0.10, f0:1700, f1:2500, g:0.14},
-    {at:0.16, dur:0.11, f0:2100, f1:3100, g:0.16},
-    {at:0.30, dur:0.13, f0:1500, f1:3500, g:0.20},
-    {at:0.60, dur:0.09, f0:1900, f1:2700, g:0.12},
-    {at:0.78, dur:0.08, f0:1700, f1:2300, g:0.09}
-  ];
-  squeaks.forEach(s=>{
-    const src = ctx.createBufferSource();
-    src.buffer = buf;
-    const filt = ctx.createBiquadFilter();
-    filt.type = 'bandpass'; filt.Q.value = 8;
-    filt.frequency.setValueAtTime(s.f0, t0 + s.at);
-    filt.frequency.linearRampToValueAtTime(s.f1, t0 + s.at + s.dur);
-    const gain = ctx.createGain();
-    gain.gain.setValueAtTime(0.0001, t0 + s.at);
-    gain.gain.linearRampToValueAtTime(s.g, t0 + s.at + s.dur*0.3);
-    gain.gain.exponentialRampToValueAtTime(0.0001, t0 + s.at + s.dur);
-    src.connect(filt).connect(gain).connect(ctx.destination);
-    src.start(t0 + s.at); src.stop(t0 + s.at + s.dur + 0.02);
-  });
-
-  const click = ctx.createBufferSource();
-  click.buffer = buf;
-  const clickFilt = ctx.createBiquadFilter();
-  clickFilt.type = 'bandpass'; clickFilt.frequency.value = 2500; clickFilt.Q.value = 6;
-  const clickGain = ctx.createGain();
-  clickGain.gain.setValueAtTime(0.22, t0 + 0.95);
-  clickGain.gain.exponentialRampToValueAtTime(0.001, t0 + 1.02);
-  click.connect(clickFilt).connect(clickGain).connect(ctx.destination);
-  click.start(t0 + 0.95); click.stop(t0 + 1.05);
+  const now = performance.now();
+  if(now - lastCreakAt < 400) return;
+  lastCreakAt = now;
+  ensureAudio();
+  const el = creakAudio.cloneNode();
+  el.volume = 0.55;
+  el.play().catch(()=>{});
 }
 
 function playChime(){
