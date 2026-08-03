@@ -345,7 +345,7 @@
   <a class="resume-btn" href="Tejaswini_Gunnapaneni_Resume.pdf" download="Tejaswini_Gunnapaneni_Resume.pdf" id="resumeBtn">↓ Download Resume</a>
 </div>
 
-<div class="sound-toggle" id="soundToggle">🔇 Sound off</div>
+<div class="sound-toggle" id="soundToggle">🔊 Sound on</div>
 <a class="contact-btn" href="mailto:gtejaswini815@gmail.com" title="Contact">✉</a>
 
 <div id="mainView">
@@ -898,8 +898,8 @@ document.getElementById('backLink').addEventListener('click', ()=> showView('mai
 document.getElementById('goProjects').addEventListener('click', ()=> showView('projects'));
 document.getElementById('backFromProjects').addEventListener('click', ()=> showView('main'));
 
-// ---------- sound: synthesized, opt-in only (off by default) ----------
-let soundOn = false;
+// ---------- sound: on by default, toggle to mute ----------
+let soundOn = true;
 let audioCtx = null;
 function ensureAudio(){
   if(!audioCtx){ audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
@@ -911,6 +911,15 @@ const creakAudio = new Audio('door-creak.mp3');
 creakAudio.preload = 'auto';
 creakAudio.volume = 0.55;
 let lastCreakAt = 0;
+
+function unlockAudioOnce(){
+  ensureAudio();
+  const primer = creakAudio.cloneNode();
+  primer.volume = 0;
+  primer.play().then(()=> primer.pause()).catch(()=>{});
+}
+document.addEventListener('pointerdown', unlockAudioOnce, {once:true});
+document.addEventListener('keydown', unlockAudioOnce, {once:true});
 
 function playCreak(){
   if(!soundOn) return;
